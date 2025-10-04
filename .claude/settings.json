@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(uv sync:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(tree:*)",
+      "Bash(uv run:*)",
+      "WebSearch",
+      "Bash(ruff check:*)",
+      "Bash(ruff format:*)",
+      "Bash(mypy:*)",
+      "Bash(find:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(PYTHONPATH=. mypy --explicit-package-bass src/)",
+      "WebFetch(domain:docs.astral.sh)",
+      "Bash(brew install:*)",
+      "Bash(just)",
+      "Bash(just install)",
+      "Bash(just:*)",
+      "Bash(git add:*)",
+      "Bash(rm:*)",
+      "Bash(PYTHONPATH=. uv run mypy --explicit-package-bases src/)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "mcp__context7",
+      "mcp__playwright",
+      "mcp__sequential",
+      "mcp__serena",
+      "mcp__magic",
+      "mcp__morphllm",
+      "mcp__sequential-thinking__sequentialthinking"
+    ],
+    "deny": []
+  }
+}
