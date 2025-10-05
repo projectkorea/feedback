@@ -1,0 +1,20 @@
+{
+  "name": "@feedback-sdk/react",
+  "version": "1.0.0",
+  "description": "React SDK for feedback collection",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"React SDK ready\"",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@feedback-sdk/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  },
+  "keywords": ["feedback", "sdk", "react"],
+  "author": "",
+  "license": "MIT"
+}

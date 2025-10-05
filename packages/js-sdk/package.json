@@ -1,0 +1,25 @@
+{
+  "name": "@feedback-sdk/js",
+  "version": "1.0.0",
+  "description": "js JavaScript SDK for feedback collection",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "build": "node build.js",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "@feedback-sdk/core": "workspace:*"
+  },
+  "keywords": [
+    "feedback",
+    "sdk",
+    "js"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.25.10"
+  }
+}
