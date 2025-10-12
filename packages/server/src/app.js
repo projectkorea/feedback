@@ -4,11 +4,17 @@ import rateLimit from '@fastify/rate-limit';
 import dotenv from 'dotenv';
 
 import { db } from './db/index.js';
+import { seedDatabase } from './db/seed.js';
 import { feedbackRoutes } from './routes/feedback.js';
 import { projectRoutes } from './routes/projects.js';
 import { settingsRoutes } from './routes/settings.js';
 
 dotenv.config();
+
+// 테스트용 데이터 초기화 (개발 환경)
+if (process.env.NODE_ENV === 'development') {
+  seedDatabase();
+}
 
 const fastify = Fastify({
   logger: {

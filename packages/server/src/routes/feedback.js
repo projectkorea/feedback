@@ -1,6 +1,7 @@
 import { db } from '../db/index.js';
 import { authMiddleware } from '../middleware/auth.js';
 import { validateFeedback } from '../middleware/validation.js';
+import { getNotificationService } from '../services/notificationService.js';
 
 export async function feedbackRoutes(fastify) {
   // 피드백 제출
@@ -43,6 +44,22 @@ export async function feedbackRoutes(fastify) {
         timestamp,
         Date.now()
       );
+
+      // 모든 설정된 플랫폼으로 알림 전송 (비동기, 실패해도 피드백 저장 성공)
+      const notificationService = getNotificationService();
+      notificationService.sendFeedbackNotification({
+        id,
+        type,
+        category,
+        rating,
+        message,
+        user_email: userEmail,
+        page_url: pageUrl,
+        platform: browserInfo?.platform,
+        timestamp
+      }).catch(err => {
+        request.log.error('Notification failed:', err);
+      });
 
       return { success: true, id };
     } catch (error) {

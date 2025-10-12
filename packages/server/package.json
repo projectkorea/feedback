@@ -13,8 +13,10 @@
     "fastify": "^4.25.2",
     "@fastify/cors": "^8.5.0",
     "@fastify/rate-limit": "^9.1.0",
+    "@slack/webhook": "^7.0.2",
     "better-sqlite3": "^9.2.2",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
   },
   "keywords": ["feedback", "api", "fastify"],
   "author": "",

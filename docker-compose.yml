@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # API Server
+  api:
+    build:
+      context: .
+      dockerfile: packages/server/Dockerfile
+    container_name: feedback-api
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - LOG_LEVEL=info
+    env_file:
+      - packages/server/.env
+    volumes:
+      # Mount SQLite database for persistence
+      - ./packages/server/feedback.db:/app/packages/server/feedback.db
+      # Mount source code for hot reload (optional, comment out for production)
+      - ./packages/server/src:/app/packages/server/src
+      - ./packages/core/src:/app/packages/core/src
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - feedback-network
+
+  # React Demo App (Development mode with Vite)
+  react-demo:
+    image: node:20-alpine
+    container_name: feedback-react-demo
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      # Mount entire monorepo for Vite dev server
+      - .:/app
+      - /app/node_modules
+      - /app/examples/react-demo/node_modules
+    command: sh -c "corepack enable && pnpm install && pnpm --filter react-demo dev --host"
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - feedback-network
+
+networks:
+  feedback-network:
+    driver: bridge
+
+volumes:
+  feedback-db:

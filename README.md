@@ -1,22 +1,137 @@
 # Feedback SDK
 
 A **monorepo SDK** system for easily collecting user feedback.
-Supports both **JavaScript** and **React** environments with a built-in **Fastify API server**.
 
 ---
 
 ## 🚀 Quick Start
 
+### Option 1: Docker (Recommended - 5 minutes)
+
 ```bash
+# 1. Clone the repository
+git clone https://github.com/yourusername/feedback-sdk.git
+cd feedback-sdk
+
+# 2. Set up notification platforms (optional but recommended)
+# Edit packages/server/.env and configure:
+# - SLACK_WEBHOOK_URL for Slack
+# - DISCORD_WEBHOOK_URL for Discord
+# - TELEGRAM_BOT_TOKEN & TELEGRAM_CHAT_ID for Telegram
+# You can enable multiple platforms at once!
+
+# 3. Start everything with Docker
+docker-compose up
+
+# 4. Open your browser
+# React Demo: http://localhost:5173
+# API Server: http://localhost:3001/health
+```
+
+That's it! 🎉 The entire system is now running:
+- ✅ API Server at http://localhost:3001
+- ✅ React Demo at http://localhost:5173
+- ✅ SQLite database automatically created
+- ✅ Demo project (`pk_demo_key`) automatically seeded
+- ✅ Multi-platform notifications (Slack/Discord/Telegram) enabled (if configured)
+
+### Option 2: Manual Setup
+
+```bash
+# 1. Install dependencies
 pnpm install
-cd packages/api-server && pnpm dev  # http://localhost:3001
 
-curl -X POST http://localhost:3001/api/projects \
-  -H "Content-Type: application/json" \
-  -d '{"name": "My Project"}'
+# 2. Set up environment
+cd packages/server
+cp .env.example .env
+# Edit .env and set your preferred notification platforms
 
-cd examples/js-demo && pnpm dev
-cd examples/react-demo && pnpm dev
+# 3. Start API server
+pnpm dev  # http://localhost:3001
+
+# 4. In another terminal, start React demo
+cd examples/react-demo
+pnpm dev  # http://localhost:5173
+```
+
+### Setting Up Notification Platforms 🌐
+
+Edit `packages/server/.env` to enable your preferred platforms:
+
+#### Slack 💬
+```bash
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/YOUR/WEBHOOK/URL
+```
+[Create Slack App](https://api.slack.com/apps) → Incoming Webhooks → Copy URL
+
+#### Discord 🎮
+```bash
+DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/YOUR/WEBHOOK/URL
+```
+Server Settings → Integrations → Webhooks → Create Webhook
+
+#### Telegram ✈️
+```bash
+TELEGRAM_BOT_TOKEN=YOUR_BOT_TOKEN
+TELEGRAM_CHAT_ID=YOUR_CHAT_ID
+```
+1. Create bot via [@BotFather](https://t.me/botfather)
+2. Add bot to your group/channel
+3. Get chat ID from: `https://api.telegram.org/bot<TOKEN>/getUpdates`
+
+**✨ You can enable multiple platforms simultaneously!**
+
+### Testing the Feedback Flow
+
+#### React Demo (Vite)
+
+```bash
+# Using Docker (recommended)
+docker-compose up
+# Then open: http://localhost:5173
+
+# Or manually
+pnpm demo:react
+```
+
+#### Vanilla JS Demo
+
+```bash
+# From root
+pnpm demo:js
+# Then open: http://localhost:8080
+```
+
+**Steps:**
+
+1. Open the demo URL
+2. See the beautiful UI showcasing all supported platforms (Slack, Discord, Telegram)
+3. Click the 💬 button in the bottom-right corner
+4. Fill out the feedback form and submit
+5. Check ALL your enabled platforms for notifications! 🎉
+
+---
+
+## 🐳 Docker Commands
+
+```bash
+# Start services
+docker-compose up
+
+# Start in detached mode (background)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Rebuild after code changes
+docker-compose up --build
+
+# Stop and remove volumes (resets database)
+docker-compose down -v
 ```
 
 ---
@@ -54,6 +169,8 @@ feedback/
 * 💾 Store, list, filter, and aggregate feedback
 * 🔑 Public Key authentication
 * 🌐 CORS & Rate limiting support
+* 📢 **Multi-platform notifications: Slack, Discord, Telegram**
+* ⚡ Async notification sending (non-blocking)
 
 ---
 
@@ -125,13 +242,6 @@ curl http://localhost:3001/api/feedback/stats \
   -H "X-Project-Id: YOUR_PROJECT_ID"
 ```
 
-### SDK Test
-
-1. Set `publicKey` and `projectId` in the demo page
-2. Click 💬 button (bottom-right corner)
-3. Choose category, rate, and write a message
-4. Check toast notification
-5. Verify via API or `feedback.db`
 
 ---
 
