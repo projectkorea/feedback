@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback SDK Demo - Vanilla JS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #1e293b;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      color: white;
+    }
+
+    header h1 {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px 0;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .subtitle {
+      font-size: 20px;
+      font-weight: 400;
+      margin: 0;
+      opacity: 0.95;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Main Content */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Platform Grid */
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .platform-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .platform-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--card-color), var(--card-color-light));
+      transition: height 0.3s ease;
+    }
+
+    .platform-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .platform-card:hover::before {
+      height: 8px;
+    }
+
+    .platform-card.slack {
+      --card-color: #4A154B;
+      --card-color-light: #611f69;
+    }
+
+    .platform-card.discord {
+      --card-color: #5865F2;
+      --card-color-light: #7289da;
+    }
+
+    .platform-card.telegram {
+      --card-color: #0088cc;
+      --card-color-light: #00a0dc;
+    }
+
+    .platform-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .platform-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: #1e293b;
+    }
+
+    .platform-desc {
+      font-size: 15px;
+      color: #64748b;
+      margin: 0 0 20px 0;
+      line-height: 1.6;
+    }
+
+    .platform-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .status-text {
+      font-size: 13px;
+      color: #10b981;
+      font-weight: 600;
+    }
+
+    /* Cards */
+    .app-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 24px 0;
+      color: #1e293b;
+    }
+
+    /* How To Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .step-content h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      color: #1e293b;
+    }
+
+    .step-content p {
+      font-size: 15px;
+      color: #64748b;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .step-content code {
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      color: #7c3aed;
+    }
+
+    /* Features Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      transition: all 0.2s ease;
+    }
+
+    .feature-item:hover {
+      background: #f1f5f9;
+      transform: scale(1.05);
+    }
+
+    .feature-icon {
+      font-size: 32px;
+    }
+
+    .feature-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 60px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    footer p {
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.95);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .footer-link:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .separator {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 36px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+      }
+
+      .platform-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .app-card {
+        padding: 24px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚡ Feedback SDK Demo</h1>
+    <p class="subtitle">Multi-platform notification system</p>
+    <span class="badge">Vanilla JavaScript</span>
+  </header>
+
+  <main>
+    <!-- Platform Cards -->
+    <div class="platform-grid">
+      <div class="platform-card slack">
+        <div class="platform-icon">💬</div>
+        <h3 class="platform-name">Slack</h3>
+        <p class="platform-desc">실시간 팀 협업 알림</p>
+        <div class="platform-status">
+          <span class="status-dot"></span>
+          <span class="status-text">연동 가능</span>
+        </div>
+      </div>
+
+      <div class="platform-card discord">
+        <div class="platform-icon">🎮</div>
+        <h3 class="platform-name">Discord</h3>
+        <p class="platform-desc">커뮤니티 피드백 수집</p>
+        <div class="platform-status">
+          <span class="status-dot"></span>
+          <span class="status-text">연동 가능</span>
+        </div>
+      </div>
+
+      <div class="platform-card telegram">
+        <div class="platform-icon">✈️</div>
+        <h3 class="platform-name">Telegram</h3>
+        <p class="platform-desc">모바일 즉시 알림</p>
+        <div class="platform-status">
+          <span class="status-dot"></span>
+          <span class="status-text">연동 가능</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- How to use -->
+    <div class="app-card how-to">
+      <h2 class="section-title">🚀 사용 방법</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h4>플랫폼 설정</h4>
+            <p><code>.env</code> 파일에서 원하는 플랫폼의 Webhook URL 설정</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h4>피드백 전송</h4>
+            <p>우측 하단 💬 버튼을 클릭하고 피드백 작성</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h4>알림 확인</h4>
+            <p>설정한 플랫폼에서 실시간으로 알림 받기! 🎉</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="app-card features">
+      <h2 class="section-title">✨ 주요 기능</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <span class="feature-icon">🎨</span>
+          <span class="feature-text">카테고리별 분류</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">⭐</span>
+          <span class="feature-text">별점 평가</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">📧</span>
+          <span class="feature-text">이메일 수집</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🌐</span>
+          <span class="feature-text">멀티 플랫폼</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">⚡</span>
+          <span class="feature-text">실시간 알림</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🔒</span>
+          <span class="feature-text">안전한 API</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Feedback SDK • Open Source Project</p>
+    <p class="footer-links">
+      <a href="#" class="footer-link">Documentation</a>
+      <span class="separator">•</span>
+      <a href="#" class="footer-link">GitHub</a>
+      <span class="separator">•</span>
+      <a href="#" class="footer-link">Demo</a>
+    </p>
+  </footer>
+
+  <!-- Feedback SDK -->
+  <script src="./dist/feedback-sdk.js"></script>
+  <script>
+    // SDK가 생성과 동시에 자동으로 플로팅 버튼과 모달을 마운트
+    const feedbackSDK = new FeedbackSDK({
+      publicKey: 'pk_demo_key',
+      projectId: 'demo_project_id',
+      apiUrl: 'http://localhost:3001'
+    });
+  </script>
+</body>
+</html>

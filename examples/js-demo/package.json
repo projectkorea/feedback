@@ -1,0 +1,13 @@
+{
+  "name": "js-demo",
+  "version": "1.0.0",
+  "description": "js SDK demo",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve .",
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "@feedback-sdk/js": "workspace:*"
+  }
+}

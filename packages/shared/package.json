@@ -1,0 +1,25 @@
+{
+  "name": "@feedback-sdk/shared",
+  "version": "1.0.0",
+  "description": "Shared code for Feedback SDK server implementations",
+  "type": "module",
+  "exports": {
+    "./db": "./src/db/index.js",
+    "./db/*": "./src/db/*.js",
+    "./db/index.js": "./src/db/index.js",
+    "./services": "./src/services/index.js",
+    "./services/*": "./src/services/*.js",
+    "./services/emailService.js": "./src/services/emailService.js",
+    "./middleware": "./src/middleware/index.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "mongoose": "^8.9.3",
+    "nodemailer": "^6.9.16",
+    "@slack/webhook": "^7.0.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {},
+  "author": "",
+  "license": "MIT"
+}

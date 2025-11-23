@@ -1,0 +1,36 @@
+{
+  "name": "feedback",
+  "author": "Leo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Feedback SDK",
+  "license": "MIT",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "clean": "pnpm -r clean",
+    "demo:js": "pnpm --filter js-demo dev",
+    "demo:react": "pnpm --filter react-demo dev",
+    "demo:next": "pnpm --filter next-demo dev"
+  },
+  "keywords": [
+    "feedback",
+    "feedback-sdk",
+    "feedback-kit",
+    "feedback-widget",
+    "feedback-modal",
+    "open-feedback",
+    "user-feedback",
+    "in-app-feedback",
+    "chat-widget",
+    "customer-support",
+    "helpdesk",
+    "sdk",
+    "typescript",
+    "web-sdk"
+  ],
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
+}
