@@ -4,13 +4,28 @@
   "description": "Shared code for Feedback SDK server implementations",
   "type": "module",
   "exports": {
-    "./db": "./src/db/index.js",
-    "./db/*": "./src/db/*.js",
-    "./db/index.js": "./src/db/index.js",
-    "./services": "./src/services/index.js",
-    "./services/*": "./src/services/*.js",
-    "./services/emailService.js": "./src/services/emailService.js",
-    "./middleware": "./src/middleware/index.js"
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./db": {
+      "types": "./dist/db/index.d.mts",
+      "import": "./dist/db/index.mjs"
+    },
+    "./services": {
+      "types": "./dist/services/index.d.mts",
+      "import": "./dist/services/index.mjs"
+    },
+    "./services/emailService": {
+      "types": "./dist/services/emailService.d.mts",
+      "import": "./dist/services/emailService.mjs"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "better-sqlite3": "^11.7.0",
@@ -19,7 +34,10 @@
     "@slack/webhook": "^7.0.2",
     "node-fetch": "^3.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/nodemailer": "^6.4.0"
+  },
   "author": "",
   "license": "MIT"
 }

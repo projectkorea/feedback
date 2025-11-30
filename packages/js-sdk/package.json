@@ -1,25 +1,29 @@
 {
   "name": "@feedback-sdk/js",
   "version": "1.0.0",
-  "description": "js JavaScript SDK for feedback collection",
-  "main": "src/index.js",
+  "description": "Vanilla JavaScript SDK for feedback collection",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "browser": "./dist/browser/index.global.js",
+  "unpkg": "./dist/browser/index.global.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./browser": "./dist/browser/index.global.js"
+  },
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "build": "node build.js",
-    "test": "echo \"No tests yet\""
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "@feedback-sdk/core": "workspace:*"
   },
-  "keywords": [
-    "feedback",
-    "sdk",
-    "js"
-  ],
+  "keywords": ["feedback", "sdk", "js"],
   "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "esbuild": "^0.25.10"
-  }
+  "license": "MIT"
 }

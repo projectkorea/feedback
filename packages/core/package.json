@@ -2,11 +2,20 @@
   "name": "@feedback-sdk/core",
   "version": "1.0.0",
   "description": "Core utilities and types for feedback SDK",
-  "main": "src/index.js",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "test": "echo \"No tests yet\""
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
   },
   "keywords": ["feedback", "core"],
   "author": "",

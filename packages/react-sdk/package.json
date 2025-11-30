@@ -2,17 +2,29 @@
   "name": "@feedback-sdk/react",
   "version": "1.0.0",
   "description": "React SDK for feedback collection",
-  "main": "src/index.js",
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
-    "dev": "echo \"React SDK ready\"",
-    "test": "echo \"No tests yet\""
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "@feedback-sdk/core": "workspace:*"
   },
   "peerDependencies": {
-    "react": "^18.0.0"
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0"
   },
   "keywords": ["feedback", "sdk", "react"],
   "author": "",
